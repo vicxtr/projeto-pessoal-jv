@@ -1,78 +1,119 @@
-let filmes = [
-    { titulo: "Através da Minha Janela 1", ano: 2022, genero: "Romance", duracao: 116, avaliacao: 7.2, pais: "Espanha", diretor: "Marçal Forés", elenco: ["Clara Galle", "Julio Peña"], sinopse: "Raquel se apaixona pelo misterioso vizinho Ares, mudando sua vida." },
-    { titulo: "Através da Minha Janela 2", ano: 2023, genero: "Romance", duracao: 110, avaliacao: 7.5, pais: "Espanha", diretor: "Marçal Forés", elenco: ["Clara Galle", "Julio Peña"], sinopse: "O casal enfrenta novos desafios para manter o relacionamento." },
-    { titulo: "O Date Perfeito", ano: 2019, genero: "Comédia Romântica", duracao: 95, avaliacao: 6.8, pais: "EUA", diretor: "Chris Nelson", elenco: ["Noah Centineo", "Laura Marano"], sinopse: "Um jovem cria um app onde se oferece como par ideal para qualquer ocasião." }
-];
+const prompt = require("prompt-sync")()
 
-let series = [
-    { titulo: "Cobra Kai", temporadas: 6, genero: "Ação", avaliacao: 8.2, status: "Finalizada", pais: "EUA", criadores: "Josh Heald, Jon Hurwitz, Hayden Schlossberg", elenco: ["Ralph Macchio", "William Zabka"], sinopse: "Décadas após Karate Kid, Johnny reabre o dojo Cobra Kai." },
-    { titulo: "Ginny & Georgia", temporadas: 2, genero: "Drama", avaliacao: 7.5, status: "Em andamento", pais: "EUA", criadores: "Sarah Lampert", elenco: ["Brianne Howey", "Antonia Gentry"], sinopse: "Mãe e filha recomeçam a vida em uma nova cidade." }
-];
+let produtos = [
+    { nome: "Camiseta", categoria: "Roupas", preco: 39.90 },
+    { nome: "Notebook", categoria: "Eletrônicos", preco: 3500 },
+    { nome: "Caneca", categoria: "Utilidades", preco: 15.00 }
+]
 
-function listarFilmes() {
-    let i = 0;
-    while(i < filmes.length) {
-        let f = filmes[i];
-        console.log("Título: " + f.titulo + ", Ano: " + f.ano + ", Gênero: " + f.genero + ", Duração: " + f.duracao + " min, Avaliação: " + f.avaliacao);
-        i++;
+function listarProdutos() {
+    console.log("--- LISTA DE PRODUTOS ---")
+    for (let i = 0; i < produtos.length; i++) {
+        let p = produtos[i]
+        console.log((i+1) + ". " + p.nome + " - " + p.categoria + " - R$ " + p.preco)
     }
 }
 
-function listarSeries() {
-    for(let i = 0; i < series.length; i++) {
-        let s = series[i];
-        console.log("Título: " + s.titulo + ", Temporadas: " + s.temporadas + ", Gênero: " + s.genero + ", Avaliação: " + s.avaliacao + ", Status: " + s.status);
+function adicionarProduto() {
+    let nome = prompt("Nome: ")
+    let categoria = prompt("Categoria: ")
+    let preco = Number(prompt("Preço: "))
+    let novoProduto = { nome: nome, categoria: categoria, preco: preco }
+    let novoArray = []
+    for (let i = 0; i < produtos.length; i++) {
+        novoArray[i] = produtos[i]
     }
+    novoArray[produtos.length] = novoProduto
+    produtos = novoArray
+    console.log("Produto adicionado com sucesso")
 }
 
-function buscarFilme(nome) {
-    let encontrado = null;
-    let i = 0;
-    while(i < filmes.length) {
-        if(filmes[i].titulo == nome) {
-            encontrado = filmes[i];
+function buscarProduto() {
+    let nome = prompt("Digite o nome do produto: ")
+    let i = 0
+    while (i < produtos.length) {
+        if (produtos[i].nome === nome) {
+            console.log("Produto encontrado:")
+            console.log(produtos[i])
+            return
         }
-        i++;
+        i++
     }
-    return encontrado;
+    console.log("Produto não encontrado")
 }
 
-function buscarSerie(nome) {
-    let encontrado = null;
-    for(let i = 0; i < series.length; i++) {
-        if(series[i].titulo == nome) {
-            encontrado = series[i];
+function filtrarPorCategoria() {
+    let categoria = prompt("Categoria desejada: ")
+    let filtrados = []
+    let pos = 0
+    for (let i = 0; i < produtos.length; i++) {
+        if (produtos[i].categoria === categoria) {
+            filtrados[pos] = produtos[i]
+            pos++
         }
     }
-    return encontrado;
+    console.log("--- PRODUTOS FILTRADOS ---")
+    console.log(filtrados)
 }
 
-function adicionarFilme(titulo, ano, genero, duracao, avaliacao, pais, diretor, elenco, sinopse) {
-    let filme = { titulo: titulo, ano: ano, genero: genero, duracao: duracao, avaliacao: avaliacao, pais: pais, diretor: diretor, elenco: elenco, sinopse: sinopse };
-    let novoArray = [];
-    let i = 0;
-    while(i < filmes.length) {
-        novoArray[i] = filmes[i];
-        i++;
+function removerProduto() {
+    listarProdutos()
+    let escolha = prompt("Digite o número do produto a remover: ")
+    let index = Number(escolha) - 1
+    if (index >= 0 && index < produtos.length) {
+        let novoArray = []
+        let pos = 0
+        for (let i = 0; i < produtos.length; i++) {
+            if (i !== index) {
+                novoArray[pos] = produtos[i]
+                pos++
+            }
+        }
+        produtos = novoArray
+        console.log("Produto removido com sucesso")
+    } else {
+        console.log("Número inválido")
     }
-    novoArray[filmes.length] = filme;
-    filmes = novoArray;
 }
 
-function adicionarSerie(titulo, temporadas, genero, avaliacao, status, pais, criadores, elenco, sinopse) {
-    let serie = { titulo: titulo, temporadas: temporadas, genero: genero, avaliacao: avaliacao, status: status, pais: pais, criadores: criadores, elenco: elenco, sinopse: sinopse };
-    let novoArray = [];
-    for(let i = 0; i < series.length; i++) {
-        novoArray[i] = series[i];
+function editarProduto() {
+    listarProdutos()
+    let escolha = prompt("Digite o número do produto a editar: ")
+    let index = Number(escolha) - 1
+    if (index >= 0 && index < produtos.length) {
+        let novoNome = prompt("Novo nome (aperte Enter para manter): ")
+        let novaCategoria = prompt("Nova categoria (aperte Enter para manter): ")
+        let novoPreco = prompt("Novo preço (aperte Enter para manter): ")
+        if (novoNome !== "") produtos[index].nome = novoNome
+        if (novaCategoria !== "") produtos[index].categoria = novaCategoria
+        if (novoPreco !== "") produtos[index].preco = Number(novoPreco)
+        console.log("Produto atualizado com sucesso")
+    } else {
+        console.log("Número inválido")
     }
-    novoArray[series.length] = serie;
-    series = novoArray;
 }
 
-// Exemplos de uso:
-listarFilmes();
-listarSeries();
-console.log(buscarFilme("O Date Perfeito"));
-console.log(buscarSerie("Cobra Kai"));
-adicionarFilme("Filme Novo", 2025, "Aventura", 120, 8.0, "Brasil", "Diretor X", ["Ator 1", "Ator 2"], "Sinopse do filme novo");
-listarFilmes();
+function menu() {
+    let opcao = ""
+    while (opcao !== "7") {
+        console.log("===== MENU =====")
+        console.log("1 - Listar produtos")
+        console.log("2 - Adicionar produto")
+        console.log("3 - Buscar produto")
+        console.log("4 - Filtrar por categoria")
+        console.log("5 - Remover produto")
+        console.log("6 - Editar produto")
+        console.log("7 - Sair")
+        opcao = prompt("Escolha uma opção: ")
+        if (opcao === "1") listarProdutos()
+        else if (opcao === "2") adicionarProduto()
+        else if (opcao === "3") buscarProduto()
+        else if (opcao === "4") filtrarPorCategoria()
+        else if (opcao === "5") removerProduto()
+        else if (opcao === "6") editarProduto()
+        else if (opcao === "7") console.log("Encerrando...")
+        else console.log("Opção inválida")
+    }
+}
+
+menu()
